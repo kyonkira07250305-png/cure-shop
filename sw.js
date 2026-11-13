@@ -1,16 +1,13 @@
 'use strict';
 
-const CACHE = 'cure-shop-3';
+const CACHE = 'cure-shop-4';
 const SHELL = [
   './',
   './index.html',
   './shop.js',
   './manifest.json',
   './assets/cure-logo.jpg',
-  './assets/icon-192.png',
-  './assets/icon-512.png',
-  './assets/apple-touch-icon.png',
-  './assets/icon-home.png',
+  './assets/icon-home-v2.png',
 ];
 
 self.addEventListener('install', (event) => {
