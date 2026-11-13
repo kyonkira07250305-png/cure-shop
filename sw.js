@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'cure-shop-2';
+const CACHE = 'cure-shop-3';
 const SHELL = [
   './',
   './index.html',
@@ -10,6 +10,7 @@ const SHELL = [
   './assets/icon-192.png',
   './assets/icon-512.png',
   './assets/apple-touch-icon.png',
+  './assets/icon-home.png',
 ];
 
 self.addEventListener('install', (event) => {
