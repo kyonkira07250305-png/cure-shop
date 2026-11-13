@@ -1,13 +1,16 @@
 'use strict';
 
-const CACHE = 'cure-shop-4';
+const CACHE = 'cure-shop-4-glass-icon';
 const SHELL = [
   './',
   './index.html',
   './shop.js',
   './manifest.json',
   './assets/cure-logo.jpg',
-  './assets/icon-home-v2.png',
+  './assets/cure-glass-192.png',
+  './assets/cure-glass-512.png',
+  './assets/cure-glass-180.png',
+  './assets/cure-glass-32.png',
 ];
 
 self.addEventListener('install', (event) => {
