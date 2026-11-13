@@ -407,7 +407,7 @@ function placeOrder(form) {
     form.elements.phone.focus();
     return;
   }
-  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     announce('メールアドレスの形を確認してください');
     form.elements.email.focus();
     return;

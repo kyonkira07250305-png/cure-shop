@@ -191,6 +191,7 @@ textarea{min-height:90px;resize:vertical}
     <button type="button" data-view="shop">商品</button>
     <button type="button" data-view="checkout">注文</button>
     <button type="button" class="bag" id="openCart">カート <span id="bagCount">0</span></button>
+    <button type="button" id="refreshShop">更新</button>
   </nav>
 </header>
 
@@ -230,8 +231,9 @@ textarea{min-height:90px;resize:vertical}
       <input id="name" name="name" autocomplete="name" required maxlength="40" placeholder="山田 花">
       <label for="phone">電話番号</label>
       <input id="phone" name="phone" type="tel" autocomplete="tel" required inputmode="tel" placeholder="09012345678">
-      <label for="email">メール（任意）</label>
-      <input id="email" name="email" type="email" autocomplete="email" placeholder="hana@example.com">
+      <label for="email">返信用メールアドレス（必須）</label>
+      <input id="email" name="email" type="email" autocomplete="email" required placeholder="hana@example.com">
+      <p class="fine">注文メールを送るときに使うアドレスを入力してください。</p>
       <label for="receive">受け取り</label>
       <select id="receive" name="receive">
         <option value="shop">店頭受け取り</option>
@@ -296,7 +298,26 @@ textarea{min-height:90px;resize:vertical}
 <p id="live" role="status"></p>
 <script src="shop.js"></script>
 <script>
-if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+
+document.getElementById('refreshShop').addEventListener('click', async (event) => {
+  const fields = document.getElementById('checkoutForm').querySelectorAll('input, textarea');
+  if ([...fields].some(field => field.value.trim()) &&
+      !window.confirm('入力中の注文情報が消えます。ショップを更新しますか？')) return;
+  const button = event.currentTarget;
+  button.disabled = true;
+  button.textContent = '更新中';
+  try {
+    if ('serviceWorker' in navigator) {
+      const registration = await navigator.serviceWorker.getRegistration();
+      if (registration) await registration.update();
+    }
+  } catch {
+    // The page can still reload if the service worker update fails.
+  } finally {
+    window.location.reload();
+  }
+});
 </script>
 </body>
 </html>

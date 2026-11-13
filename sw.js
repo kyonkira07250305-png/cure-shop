@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'cure-shop-5-email-orders';
+const CACHE = 'cure-shop-6-refresh';
 const SHELL = [
   './',
   './index.html',
@@ -30,7 +30,7 @@ self.addEventListener('fetch', (event) => {
   const url = new URL(req.url);
   if (url.origin !== self.location.origin) return;
   event.respondWith(
-    fetch(req)
+    fetch(req, { cache: 'no-cache' })
       .then((res) => {
         const copy = res.clone();
         caches.open(CACHE).then((cache) => cache.put(req, copy));
