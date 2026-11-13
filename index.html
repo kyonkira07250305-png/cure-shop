@@ -189,7 +189,7 @@ textarea{min-height:90px;resize:vertical}
   <a class="brand" href="index.html"><img src="assets/cure-logo.jpg" alt="Cure Stem Cell Facial Beauty Salon"></a>
   <nav>
     <button type="button" data-view="shop">商品</button>
-    <button type="button" data-view="orders">注文</button>
+    <button type="button" data-view="checkout">注文</button>
     <button type="button" class="bag" id="openCart">カート <span id="bagCount">0</span></button>
   </nav>
 </header>
@@ -205,7 +205,7 @@ textarea{min-height:90px;resize:vertical}
       <p class="kicker">ONLINE SHOP</p>
       <h1>みずみずしいホームケア</h1>
       <p class="lede">サロンのうるおいを、ご自宅へ。</p>
-      <p class="fine">どの商品も AirPAY で1点ずつお支払いできます。カード番号は預かりません。</p>
+      <p class="fine">配送をご希望の方は、商品をカートに入れ、注文メールを送ってください。AirPAYでは商品1点ずつのお支払いができます。</p>
     </div>
   </section>
   <section class="wrap">
@@ -223,10 +223,10 @@ textarea{min-height:90px;resize:vertical}
   <div class="panel">
     <button type="button" class="text" data-view="shop">← 商品に戻る</button>
     <h2>ご注文</h2>
-    <p class="fine">この画面では決済しません。注文のあと、店頭かお電話でお支払いを確定します。</p>
+    <p class="fine">ご注文内容を確認したあと、メールアプリでお店に注文メールを送ってください。お支払い方法はお店からご案内します。</p>
     <div id="checkoutLines"></div>
     <form id="checkoutForm">
-      <label for="name">お名前</label>
+      <label for="name">氏名</label>
       <input id="name" name="name" autocomplete="name" required maxlength="40" placeholder="山田 花">
       <label for="phone">電話番号</label>
       <input id="phone" name="phone" type="tel" autocomplete="tel" required inputmode="tel" placeholder="09012345678">
@@ -238,15 +238,21 @@ textarea{min-height:90px;resize:vertical}
         <option value="delivery">配送希望</option>
       </select>
       <p class="fine" id="receiveHint"></p>
+      <div id="deliveryFields" hidden>
+        <label for="postalCode">郵便番号</label>
+        <input id="postalCode" name="postalCode" autocomplete="shipping postal-code" inputmode="numeric" maxlength="8" placeholder="1234567" disabled>
+        <label for="address">配送先住所</label>
+        <textarea id="address" name="address" autocomplete="shipping street-address" maxlength="250" rows="3" placeholder="都道府県・市区町村・番地・建物名・部屋番号" disabled></textarea>
+      </div>
       <label for="pay">お支払い</label>
       <select id="pay" name="pay">
         <option value="shop">店頭でお支払い</option>
         <option value="transfer">振込案内を希望</option>
       </select>
       <label for="note">ご要望（任意）</label>
-      <textarea id="note" name="note" maxlength="400" placeholder="来店希望日、のし、配送先の市区町村など"></textarea>
+      <textarea id="note" name="note" maxlength="400" placeholder="来店希望日、のしなど"></textarea>
       <div class="actions">
-        <button type="submit" class="primary">注文を確定する</button>
+        <button type="submit" class="primary">注文内容を確認する</button>
       </div>
     </form>
   </div>
@@ -254,12 +260,11 @@ textarea{min-height:90px;resize:vertical}
 
 <section id="thanksView" class="wrap hidden">
   <div class="panel">
-    <p class="kicker">THANK YOU</p>
-    <h2>注文を受け付けました</h2>
+    <h2>注文内容の確認</h2>
     <div id="thanksBody"></div>
     <div class="actions">
-      <button type="button" class="primary" data-view="shop">商品に戻る</button>
-      <button type="button" data-view="orders">注文を見る</button>
+      <a id="orderMail" class="pay">メールアプリで注文を送る</a>
+      <button type="button" data-view="checkout">入力に戻る</button>
     </div>
   </div>
 </section>
@@ -268,7 +273,7 @@ textarea{min-height:90px;resize:vertical}
   <div class="panel">
     <button type="button" class="text" data-view="shop">← 商品に戻る</button>
     <h2>このブラウザの注文</h2>
-    <p class="fine">注文は、この端末のブラウザにだけ残ります。</p>
+    <p class="fine">以前この端末に保存した注文を表示しています。</p>
     <div id="ordersBody"></div>
   </div>
 </section>

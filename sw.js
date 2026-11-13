@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'cure-shop-4-glass-icon';
+const CACHE = 'cure-shop-5-email-orders';
 const SHELL = [
   './',
   './index.html',

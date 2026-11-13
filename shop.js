@@ -75,6 +75,7 @@ const PRODUCTS = [
 
 const FILTERS = ['すべて', 'マスク', 'セラム', 'UV', 'クレンジング', '洗顔'];
 const CART_KEY = 'cure-ec-cart';
+const ORDER_EMAIL = 'kyon.kira.0725.0305@gmail.com';
 const ORDER_KEY = 'cure-ec-orders';
 
 const $ = (id) => document.getElementById(id);
@@ -292,15 +293,21 @@ function paintCheckout() {
     return;
   }
   $('checkoutForm').classList.remove('hidden');
+  const delivery = $('receive').querySelector('option[value="delivery"]');
+  const onlyShop = needsPickup(lines);
+  delivery.disabled = onlyShop;
+  if (onlyShop && $('receive').value === 'delivery') $('receive').value = 'shop';
+  const isDelivery = $('receive').value === 'delivery';
+  $('deliveryFields').hidden = !isDelivery;
+  for (const field of $('deliveryFields').querySelectorAll('input, textarea')) {
+    field.disabled = !isDelivery;
+    field.required = isDelivery;
+  }
   const bill = quote(lines, $('receive').value);
   const shipLabel = bill.shipping === 0 ? '無料' : yen(bill.shipping);
   mount.innerHTML = lines.map((line) => `
     <div class="sum-line"><span>${esc(line.name)} × ${line.qty}</span><strong>${yen(line.price * line.qty)}</strong></div>
   `).join('') + `<div class="sum-line"><span>商品合計</span><strong>${yen(bill.subtotal)}</strong></div><div class="sum-line"><span>送料</span><strong>${shipLabel}</strong></div><div class="sum-line total"><span>合計</span><strong>${yen(bill.total)}</strong></div>`;
-  const delivery = $('receive').querySelector('option[value="delivery"]');
-  const onlyShop = needsPickup(lines);
-  delivery.disabled = onlyShop;
-  if (onlyShop && $('receive').value === 'delivery') $('receive').value = 'shop';
   $('receiveHint').textContent = onlyShop
     ? '施術チケットが入っているので、受け取りは店頭のみです。'
     : bill.shipping === 0 && $('receive').value === 'delivery'
@@ -311,10 +318,6 @@ function paintCheckout() {
 }
 
 function paintThanks(order) {
-  if (!order) {
-    $('thanksBody').innerHTML = '<p class="empty">表示できる注文がありません。</p>';
-    return;
-  }
   const items = (order.items || []).map((line) => `<li>${esc(line.name)} × ${line.qty}　${yen(line.price * line.qty)}</li>`).join('');
   $('thanksBody').innerHTML = `
     <p class="order-no">注文番号 <strong>${esc(order.id)}</strong></p>
@@ -322,9 +325,32 @@ function paintThanks(order) {
     <p>商品合計 ${yen(order.subtotal ?? order.total)} / 送料 ${order.shipping ? yen(order.shipping) : '無料'} / 合計 ${yen(order.total)}</p>
     <p>${esc(order.receiveLabel)} / ${esc(order.payLabel)}</p>
     <p>${esc(order.name)} 様${order.phone ? ' ・ ' + esc(order.phone) : ''}</p>
+    ${order.address ? `<p>配送先　〒${esc(order.postalCode)} <span style="white-space:pre-line">${esc(order.address)}</span></p>` : ''}
     ${order.note ? `<p>ご要望：${esc(order.note)}</p>` : ''}
-    <p class="fine">この注文は、いま開いているブラウザの中に保存しています。カード決済は行っていません。</p>
+    <p class="fine">メールアプリが開いたら、内容を確認して送信してください。お店からの返信をお待ちください。</p>
   `;
+  $('orderMail').href = orderMailUrl(order);
+}
+
+function orderMailUrl(order) {
+  const body = [
+    'Cureオンラインショップへの注文',
+    `注文番号　${order.id}`,
+    '',
+    ...order.items.map((line) => `${line.name} × ${line.qty}　${yen(line.price * line.qty)}`),
+    `商品合計　${yen(order.subtotal)}`,
+    `送料　${yen(order.shipping)}`,
+    `合計　${yen(order.total)}`,
+    '',
+    `氏名　${order.name}`,
+    `電話番号　${order.phone}`,
+    ...(order.email ? [`メール　${order.email}`] : []),
+    `受け取り　${order.receiveLabel}`,
+    ...(order.address ? [`郵便番号　${order.postalCode}`, `配送先住所　${order.address}`] : []),
+    `お支払い　${order.payLabel}`,
+    ...(order.note ? [`ご要望　${order.note}`] : []),
+  ].join('\r\n');
+  return `mailto:${ORDER_EMAIL}?subject=${encodeURIComponent(`Cureショップ注文 ${order.id}`)}&body=${encodeURIComponent(body)}`;
 }
 
 function paintOrders() {
@@ -390,16 +416,31 @@ function placeOrder(form) {
     announce('施術チケットは店頭のみです');
     return;
   }
+  const postalCode = receive === 'delivery'
+    ? String(data.get('postalCode') || '').normalize('NFKC').trim()
+    : '';
+  const address = receive === 'delivery' ? String(data.get('address') || '').trim() : '';
+  if (receive === 'delivery') {
+    if (!/^\d{3}-?\d{4}$/.test(postalCode)) {
+      announce('郵便番号を7桁で入力してください');
+      form.elements.postalCode.focus();
+      return;
+    }
+    if (!address) {
+      announce('配送先住所を入力してください');
+      form.elements.address.focus();
+      return;
+    }
+  }
   const bill = quote(lines, receive);
   const order = {
     id: orderId(),
-    when: new Date().toLocaleString('ja-JP', { hour12: false }),
     name,
     phone: phone.replace(/[-\s]/g, ''),
     email,
-    receive,
+    postalCode,
+    address,
     receiveLabel: receive === 'delivery' ? '配送希望' : '店頭受け取り',
-    pay,
     payLabel: pay === 'transfer' ? '振込案内を希望' : '店頭でお支払い',
     note,
     items: lines.map((line) => ({ id: line.id, name: line.name, price: line.price, qty: line.qty })),
@@ -407,14 +448,9 @@ function placeOrder(form) {
     shipping: bill.shipping,
     total: bill.total,
   };
-  const orders = readOrders();
-  orders.unshift(order);
-  localStorage.setItem(ORDER_KEY, JSON.stringify(orders.slice(0, 30)));
-  writeCart([]);
-  form.reset();
   show('thanks');
   paintThanks(order);
-  announce(`注文を受け付けました。番号は${order.id}です`);
+  announce('注文内容を確認し、メールを送信してください');
 }
 
 function clickedElement(event) {
