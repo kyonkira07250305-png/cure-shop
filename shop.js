@@ -128,7 +128,7 @@ function cartCount() {
   return readCart().reduce((sum, row) => sum + row.qty, 0);
 }
 
-const FREE_SHIPPING_AT = 30000;
+const FREE_SHIPPING_AT = 20000;
 const SHIPPING_FEE = 1000;
 
 function cartTotal(lines = cartLines()) {
@@ -304,17 +304,17 @@ function paintCheckout() {
     field.required = isDelivery;
   }
   const bill = quote(lines, $('receive').value);
-  const shipLabel = bill.shipping === 0 ? '無料' : yen(bill.shipping);
+  const shipLabel = isDelivery ? (bill.shipping === 0 ? '無料' : yen(bill.shipping)) : 'なし（店頭受け取り）';
   mount.innerHTML = lines.map((line) => `
     <div class="sum-line"><span>${esc(line.name)} × ${line.qty}</span><strong>${yen(line.price * line.qty)}</strong></div>
   `).join('') + `<div class="sum-line"><span>商品合計</span><strong>${yen(bill.subtotal)}</strong></div><div class="sum-line"><span>送料</span><strong>${shipLabel}</strong></div><div class="sum-line total"><span>合計</span><strong>${yen(bill.total)}</strong></div>`;
   $('receiveHint').textContent = onlyShop
     ? '施術チケットが入っているので、受け取りは店頭のみです。'
-    : bill.shipping === 0 && $('receive').value === 'delivery'
-      ? '商品合計が3万円以上なので、送料は無料です。'
-      : $('receive').value === 'delivery'
-        ? '商品合計が3万円未満なので、送料1,000円がかかります。'
-        : '店頭受け取りは送料なし。配送は3万円以上で無料、3万円未満は1,000円です。';
+    : bill.shipping === 0 && isDelivery
+      ? `商品合計が${yen(FREE_SHIPPING_AT)}以上なので、送料無料です。`
+      : isDelivery
+        ? `商品合計が${yen(FREE_SHIPPING_AT)}未満なので、送料は${yen(SHIPPING_FEE)}です。`
+        : `店頭受け取りは送料なし。配送は商品合計${yen(FREE_SHIPPING_AT)}以上で送料無料、未満は一律${yen(SHIPPING_FEE)}です。`;
 }
 
 function paintThanks(order) {
@@ -322,7 +322,7 @@ function paintThanks(order) {
   $('thanksBody').innerHTML = `
     <p class="order-no">注文番号 <strong>${esc(order.id)}</strong></p>
     <ul>${items}</ul>
-    <p>商品合計 ${yen(order.subtotal ?? order.total)} / 送料 ${order.shipping ? yen(order.shipping) : '無料'} / 合計 ${yen(order.total)}</p>
+    <p>商品合計 ${yen(order.subtotal ?? order.total)} / 送料 ${order.shipping ? yen(order.shipping) : order.address ? '無料' : 'なし（店頭受け取り）'} / 合計 ${yen(order.total)}</p>
     <p>${esc(order.receiveLabel)} / ${esc(order.payLabel)}</p>
     <p>${esc(order.name)} 様${order.phone ? ' ・ ' + esc(order.phone) : ''}</p>
     ${order.address ? `<p>配送先　〒${esc(order.postalCode)} <span style="white-space:pre-line">${esc(order.address)}</span></p>` : ''}
