@@ -276,7 +276,7 @@ function paintDetail() {
       <h2 id="detailTitle">${esc(item.name)}</h2>
       <p class="price">${yen(item.price)}<small>税込</small></p>
       <p>${esc(item.detail)}</p>
-      ${item.id === 'serum' || item.id === 'mask' ? '<p class="fine">当店のセラムはHITOYURAIの正代理店です。代理店規約のなかに楽天、アマゾン、Yahoo、などの外部サイトへの転売は禁止されています。もし見かけても粗悪品ですのでお気をつけくださいませ。尚、メルティングマスクも同様です。</p>' : ''}
+      ${item.id === 'serum' || item.id === 'mask' ? '<p class="fine">当店のセラムは、HITOYURAIの正代理店です。代理店規約により、楽天、アマゾン、Yahooなどの外部サイトへの転売は禁止されています。外部サイトでお見かけの際は、粗悪品の恐れがございますので、お気をつけくださいませ。メルティングマスクも同様です。</p>' : ''}
       <p class="fine">${item.ship ? '店頭受け取りと配送が選べます。' : 'この商品は店頭でのご利用です。配送はできません。'}</p>
       <button type="button" data-add="${esc(item.id)}">カートに入れる</button>
       ${payBlock(item)}
@@ -327,7 +327,7 @@ function paintThanks(order) {
     <p>${esc(order.name)} 様${order.phone ? ' ・ ' + esc(order.phone) : ''}</p>
     ${order.address ? `<p>配送先　〒${esc(order.postalCode)} <span style="white-space:pre-line">${esc(order.address)}</span></p>` : ''}
     ${order.note ? `<p>ご要望：${esc(order.note)}</p>` : ''}
-    <p class="fine">メールアプリが開いたら、内容を確認して送信してください。お店からの返信をお待ちください。</p>
+    <p class="fine">メールアプリが開いたら、内容をご確認のうえ送信してください。お店からの返信をお待ちください。</p>
   `;
   $('orderMail').href = orderMailUrl(order);
 }
