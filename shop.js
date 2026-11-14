@@ -33,10 +33,10 @@ const PRODUCTS = [
   },
   {
     id: 'uv',
-    name: 'エクソソーム入り日焼け止めUVクリーム',
+    name: 'エクソソーム入り日焼け止めUVクリーム 30g',
     cat: 'ホームケア',
     concern: 'UV',
-    volume: '',
+    volume: '30g',
     price: 3300,
     ship: true,
     tone: 'sun',
@@ -44,7 +44,7 @@ const PRODUCTS = [
     payUrl: 'https://web.online.airpayment.jp/payment?planId=PL1BzRnKTj5kAWhTI8',
     payNote: '1本・税込3,300円',
     blurb: '日焼け止めUVクリーム。税込3,300円。',
-    detail: 'エクソソーム入りの日焼け止めUVクリームです。店頭受け取りと配送が選べます。表示価格は税込3,300円です。',
+    detail: 'エクソソーム入りの日焼け止めUVクリームです。内容量は30gです。店頭受け取りと配送が選べます。表示価格は税込3,300円です。',
   },
   {
     id: 'cleanse',
