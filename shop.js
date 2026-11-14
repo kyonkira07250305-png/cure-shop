@@ -11,6 +11,7 @@ const PRODUCTS = [
     price: 10780,
     ship: true,
     tone: 'cream',
+    image: 'assets/mask.png',
     payUrl: 'https://web.online.airpayment.jp/payment?planId=PLOVbtZHrSQP6W0AOv',
     payNote: '1個・税込10,780円',
     blurb: '220g。税込10,780円。',
