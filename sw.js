@@ -1,12 +1,13 @@
 'use strict';
 
-const CACHE = 'cure-shop-7-shipping';
+const CACHE = 'cure-shop-aqua-home-v1';
 const SHELL = [
   './',
   './index.html',
   './shop.js',
   './manifest.json',
   './assets/cure-logo.jpg',
+  './assets/cure-home-aqua.jpg',
   './assets/cure-glass-192.png',
   './assets/cure-glass-512.png',
   './assets/cure-glass-180.png',

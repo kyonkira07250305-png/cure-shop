@@ -68,35 +68,61 @@ a{color:var(--water-deep)}
   display:inline-grid;place-items:center;min-width:22px;height:22px;margin-left:6px;
   border-radius:99px;background:#fff;color:var(--water-deep);font-size:12px;
 }
-.splash{
-  margin:16px auto 0;max-width:1100px;padding:0 20px;
-}
-.splash figure{
-  margin:0 auto;max-width:560px;background:#fff;border-radius:32px;overflow:hidden;
-  box-shadow:0 18px 40px #8ec8e433;
-}
-.splash img{display:block;width:100%;height:auto}
-
 .hero{
-  padding:42px 20px 18px;max-width:1100px;margin:0 auto;
+  position:relative;isolation:isolate;display:grid;align-items:center;
+  width:calc(100% - 40px);max-width:1060px;min-height:clamp(410px,50vw,580px);
+  margin:24px auto 0;overflow:hidden;border:1px solid #fff;border-radius:28px;
+  background:#e7f6f8;box-shadow:0 20px 54px #3d819924;
+}
+.hero-photo{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  object-position:70% 36%;z-index:-2;
+}
+.hero::before{
+  content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(90deg,#fbffffc9,#f6ffff73 39%,transparent 64%);
+}
+.hero-content{
+  width:min(55%,580px);padding:38px clamp(24px,4.2vw,58px);
+  color:#193e4b;
 }
 .kicker{letter-spacing:.28em;font-size:12px;color:var(--gold);margin:0 0 8px}
-.hero h1{
-  margin:0;
-  font-weight:500;
-  font-size:clamp(34px, 8.6vw, 54px);
-  line-height:1.45;
-  letter-spacing:.04em;
-  max-width:12em;
-  color:var(--water-deep);
+.hero .kicker{color:#345966;margin-bottom:20px}
+.hero-copy{
+  display:grid;align-items:center;min-height:3.1em;
+  font-size:clamp(26px,3.4vw,47px);line-height:1.48;letter-spacing:.035em;
 }
-.hero .lede{
-  margin:12px 0 16px;
-  font-size:clamp(13px, 3.5vw, 16px);
-  line-height:1.8;
-  letter-spacing:.08em;
-  max-width:32em;
+.hero-copy > *{grid-area:1/1;margin:0;font-size:inherit;font-weight:500}
+.hero-copy .hero-secondary{opacity:0}
+.hero-pause{min-height:44px;display:flex;align-items:center;gap:8px;margin-top:12px}
+.hero-pause input{width:16px;height:16px;margin:0;accent-color:#345966}
+.hero-pause label{margin:0;font-size:12px;line-height:1.5;cursor:pointer}
+.hero .hero-pause{display:none}
+@keyframes cure-hero-primary{
+  0%,100%{opacity:1}
+  37%{opacity:1}
+  45%,94%{opacity:0}
 }
+@keyframes cure-hero-secondary{
+  0%,45%,94%,100%{opacity:0}
+  53%,86%{opacity:1}
+}
+@media(prefers-reduced-motion:no-preference){
+  .hero-copy h1{animation:cure-hero-primary 14s ease-in-out infinite}
+  .hero-copy .hero-secondary{animation:cure-hero-secondary 14s ease-in-out infinite}
+  .hero .hero-pause{display:flex}
+}
+.hero-content:has(#pauseHero:checked) .hero-copy{display:block}
+.hero-content:has(#pauseHero:checked) .hero-copy > *{animation:none;opacity:1}
+.hero-content:has(#pauseHero:checked) .hero-secondary{
+  margin-top:12px;font-size:.56em;line-height:1.7;
+}
+@media(prefers-reduced-motion:reduce){
+  .hero-copy{display:block}
+  .hero-copy .hero-secondary{opacity:1;margin-top:12px;font-size:.56em;line-height:1.7}
+}
+.shop-guide{margin:0 0 8px}
+#grid{scroll-margin-top:170px}
 .fine{color:var(--muted);font-size:13px;line-height:1.7}
 
 .wrap{padding:8px 20px 64px;max-width:1100px;margin:0 auto}
@@ -188,11 +214,27 @@ textarea{min-height:90px;resize:vertical}
 #live{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
 @media(max-width:800px){
-  .hero{padding-top:24px}
-  .splash{padding:0 16px}
   .brand img{height:56px}
   .top nav{width:100%;margin-left:0}
   .top nav button{flex:1}
+}
+@media(max-width:760px){
+  .top{padding-inline:12px}
+  .top nav{gap:6px}
+  .top nav button{padding-inline:8px}
+  .hero{width:calc(100% - 24px);margin-top:12px;border-radius:22px;min-height:0}
+  .hero::before{content:none}
+  .hero-photo{
+    position:static;display:block;aspect-ratio:1.45;height:auto;
+    object-position:92% 32%;
+  }
+  .hero-content{
+    width:100%;padding:22px 16px 12px;text-align:center;
+    background:linear-gradient(180deg,#e1f2f5,#f8fdfd);
+  }
+  .hero .kicker{margin-bottom:10px}
+  .hero-copy{font-size:clamp(24px,7vw,36px)}
+  .hero-pause{justify-content:center;margin-top:4px}
 }
 </style>
 </head>
@@ -209,20 +251,22 @@ textarea{min-height:90px;resize:vertical}
 </header>
 
 <main id="shopView">
-  <section class="splash">
-    <figure>
-      <img src="assets/cure-logo.jpg" alt="Cure。水のCとCure、STEM CELL FACIAL BEAUTY SALON">
-    </figure>
-  </section>
-  <section class="hero">
-    <div>
+  <section class="hero" aria-labelledby="hero-title">
+    <img class="hero-photo" src="assets/cure-home-aqua.jpg" width="1672" height="941" alt="" fetchpriority="high">
+    <div class="hero-content">
       <p class="kicker">ONLINE SHOP</p>
-      <h1>美しさの続きを、<br>ご自宅でも。</h1>
-      <p class="lede">サロンが選ぶ、こだわりのホームケア。</p>
-      <p class="fine">配送をご希望の場合は、カートに入れて注文メールをお送りください。AirPAYでは、商品を1点ずつお支払いいただけます。</p>
+      <div class="hero-copy">
+        <h1 id="hero-title">美しさの続きを、<br>ご自宅でも。</h1>
+        <p class="hero-secondary">サロンが選ぶ、<br>こだわりのホームケア。</p>
+      </div>
+      <div class="hero-pause">
+        <input type="checkbox" id="pauseHero">
+        <label for="pauseHero">文言の切り替えを停止</label>
+      </div>
     </div>
   </section>
   <section class="wrap">
+    <p class="fine shop-guide">配送をご希望の場合は、カートに入れて注文メールをお送りください。AirPAYでは、商品を1点ずつお支払いいただけます。</p>
     <div class="filters" id="filters"></div>
     <div class="grid" id="grid"></div>
     <aside class="notice">
