@@ -244,7 +244,7 @@ function paintDrawer() {
     : `配送は送料${yen(SHIPPING_FEE)}です。あと${yen(remain)}で送料無料。店頭受け取りは送料なし。`;
   $('drawerBody').innerHTML = lines.map((line) => `
     <article class="line">
-      <div class="mini ${esc(line.tone)}" aria-hidden="true"></div>
+      <div class="mini ${line.image ? 'has-photo' : esc(line.tone)}" aria-hidden="true">${line.image ? `<img src="${esc(line.image)}" alt="">` : ''}</div>
       <div>
         <h3>${esc(line.name)}</h3>
         <p>${yen(line.price)}<span>${line.ship ? '配送可' : '店頭のみ'}</span></p>
