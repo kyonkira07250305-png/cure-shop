@@ -70,6 +70,7 @@ const PRODUCTS = [
     price: 3300,
     ship: true,
     tone: 'wash',
+    image: 'assets/wash.png',
     payUrl: 'https://web.online.airpayment.jp/payment?planId=PLy0aAoGvTQH91EnnJ',
     payNote: '1本・税込3,300円',
     blurb: '100g。税込3,300円。',
