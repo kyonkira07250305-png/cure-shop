@@ -94,28 +94,13 @@ a{color:var(--water-deep)}
 }
 .hero-copy > *{grid-area:1/1;margin:0;font-size:inherit;font-weight:500}
 .hero-copy .hero-secondary{opacity:0}
-.hero-pause{min-height:44px;display:flex;align-items:center;gap:8px;margin-top:12px}
-.hero-pause input{width:16px;height:16px;margin:0;accent-color:#345966}
-.hero-pause label{margin:0;font-size:12px;line-height:1.5;cursor:pointer}
-.hero .hero-pause{display:none}
-@keyframes cure-hero-primary{
-  0%,100%{opacity:1}
-  37%{opacity:1}
-  45%,94%{opacity:0}
-}
-@keyframes cure-hero-secondary{
-  0%,45%,94%,100%{opacity:0}
-  53%,86%{opacity:1}
+@keyframes cure-hero-fade{
+  0%,48%,100%{opacity:0}
+  8%,40%{opacity:1}
 }
 @media(prefers-reduced-motion:no-preference){
-  .hero-copy h1{animation:cure-hero-primary 14s ease-in-out infinite}
-  .hero-copy .hero-secondary{animation:cure-hero-secondary 14s ease-in-out infinite}
-  .hero .hero-pause{display:flex}
-}
-.hero-content:has(#pauseHero:checked) .hero-copy{display:block}
-.hero-content:has(#pauseHero:checked) .hero-copy > *{animation:none;opacity:1}
-.hero-content:has(#pauseHero:checked) .hero-secondary{
-  margin-top:12px;font-size:.56em;line-height:1.7;
+  .hero-copy > *{animation:cure-hero-fade 16s ease-in-out -1.28s infinite}
+  .hero-copy .hero-secondary{animation-delay:-9.28s}
 }
 @media(prefers-reduced-motion:reduce){
   .hero-copy{display:block}
@@ -232,12 +217,11 @@ textarea{min-height:90px;resize:vertical}
     object-position:92% 32%;
   }
   .hero-content{
-    width:100%;padding:22px 16px 12px;text-align:center;
+    width:100%;padding:22px 16px 24px;text-align:center;
     background:linear-gradient(180deg,#e1f2f5,#f8fdfd);
   }
   .hero .kicker{margin-bottom:10px}
   .hero-copy{font-size:clamp(24px,7vw,36px)}
-  .hero-pause{justify-content:center;margin-top:4px}
 }
 </style>
 </head>
@@ -261,10 +245,6 @@ textarea{min-height:90px;resize:vertical}
       <div class="hero-copy">
         <h1 id="hero-title">美しさの続きを、<br>ご自宅でも。</h1>
         <p class="hero-secondary">サロンが選ぶ、<br>こだわりのホームケア。</p>
-      </div>
-      <div class="hero-pause">
-        <input type="checkbox" id="pauseHero">
-        <label for="pauseHero">文言の切り替えを停止</label>
       </div>
     </div>
   </section>
