@@ -40,6 +40,7 @@ const PRODUCTS = [
     price: 3300,
     ship: true,
     tone: 'sun',
+    image: 'assets/uv.png',
     payUrl: 'https://web.online.airpayment.jp/payment?planId=PL1BzRnKTj5kAWhTI8',
     payNote: '1本・税込3,300円',
     blurb: '日焼け止めUVクリーム。税込3,300円。',
