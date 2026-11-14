@@ -25,6 +25,7 @@ const PRODUCTS = [
     price: 10780,
     ship: true,
     tone: 'mist',
+    image: 'assets/serum.png',
     payUrl: 'https://web.online.airpayment.jp/payment?planId=PLdCZgUapV82KlgCRE',
     blurb: '15g。税込10,780円。',
     detail: '内容量は15gです。店頭受け取りと配送が選べます。表示価格は税込10,780円です。',
@@ -207,8 +208,8 @@ function paintGrid() {
   const list = PRODUCTS.filter((item) => filter === 'すべて' || item.concern === filter);
   $('grid').innerHTML = list.length ? list.map((item) => `
     <article class="card">
-      <button type="button" class="swatch ${esc(item.tone)}" data-open="${esc(item.id)}" aria-label="${esc(item.name)}の詳細">
-        <span class="mark">${esc(item.name)}</span>
+      <button type="button" class="swatch ${item.image ? 'has-photo' : esc(item.tone)}" data-open="${esc(item.id)}" aria-label="${esc(item.name)}の詳細">
+        ${item.image ? `<img class="product-photo" src="${esc(item.image)}" alt="">` : `<span class="mark">${esc(item.name)}</span>`}
         ${item.volume ? `<span class="vol">${esc(item.volume)}</span>` : ''}
       </button>
       <div class="card-body">
