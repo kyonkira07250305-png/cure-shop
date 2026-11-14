@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'cure-shop-aqua-home-v1';
+const CACHE = 'cure-shop-aqua-home-v2';
 const SHELL = [
   './',
   './index.html',
