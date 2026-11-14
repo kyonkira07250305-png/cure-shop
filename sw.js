@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'cure-shop-uv-photo-v1';
+const CACHE = 'cure-shop-cleanse-photo-v1';
 const SHELL = [
   './',
   './index.html',
@@ -11,6 +11,7 @@ const SHELL = [
   './assets/serum.png',
   './assets/mask.png',
   './assets/uv.png',
+  './assets/cleanse.png',
   './assets/cure-glass-192.png',
   './assets/cure-glass-512.png',
   './assets/cure-glass-180.png',

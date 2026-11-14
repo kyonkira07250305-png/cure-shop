@@ -55,6 +55,7 @@ const PRODUCTS = [
     price: 3300,
     ship: true,
     tone: 'foam',
+    image: 'assets/cleanse.png',
     payUrl: 'https://web.online.airpayment.jp/payment?planId=PLUTwHt4TaWKjc910G',
     payNote: '1本・税込3,300円',
     blurb: '100g。税込3,300円。',
