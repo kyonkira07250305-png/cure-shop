@@ -106,9 +106,24 @@ const PRODUCTS = [
     blurb: '80mL・税込8,250円',
     detail: '内容量 80mL',
   },
+  {
+    id: 'premium-cream',
+    name: '高濃度幹細胞プレミアムクリーム',
+    cat: 'ホームケア',
+    concern: 'クリーム',
+    volume: '30g',
+    price: 8250,
+    ship: true,
+    tone: 'cream',
+    image: 'assets/premium-cream.jpg',
+    payUrl: 'https://web.online.airpayment.jp/payment?planId=PLvHymqS5KggcRYaN2',
+    payNote: '1個・税込8,250円',
+    blurb: '30g・税込8,250円',
+    detail: '内容量 30g',
+  },
 ];
 
-const FILTERS = ['すべて', 'マスク', 'セラム', '化粧水', '乳液', 'UV', 'クレンジング', '洗顔'];
+const FILTERS = ['すべて', 'マスク', 'セラム', '化粧水', '乳液', 'クリーム', 'UV', 'クレンジング', '洗顔'];
 const CART_KEY = 'cure-ec-cart';
 const ORDER_EMAIL = 'kyon.kira.0725.0305@gmail.com';
 const ORDER_KEY = 'cure-ec-orders';
