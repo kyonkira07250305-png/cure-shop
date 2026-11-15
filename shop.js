@@ -226,7 +226,7 @@ function payBlock(item) {
   </div>`;
 }
 
-const CARD_PAYMENT_GUIDE = 'クレジットカードでは商品を1点ずつお支払いいただけます。送料とご注文については、お店からのご案内をご確認ください。';
+const CARD_PAYMENT_GUIDE = 'クレジットカード決済は、商品1点ずつのお支払いです。複数の商品をクレジットカードでまとめてお支払いの場合は、まとめたQRをご用意しますので、お問い合わせください。';
 
 function paintGrid() {
   const list = PRODUCTS.filter((item) => filter === 'すべて' || item.concern === filter);
