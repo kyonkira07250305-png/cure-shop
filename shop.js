@@ -32,6 +32,21 @@ const PRODUCTS = [
     detail: '内容量は15gです。店頭受け取りと配送が選べます。表示価格は税込10,780円です。',
   },
   {
+    id: 'lotion',
+    name: '高濃度幹細胞化粧水',
+    cat: 'ホームケア',
+    concern: '化粧水',
+    volume: '120ml',
+    price: 8250,
+    ship: true,
+    tone: 'mist',
+    image: 'assets/lotion.png',
+    payUrl: 'https://web.online.airpayment.jp/payment?planId=PLN70ucwUmkrXw0CNz',
+    payNote: '1本・税込8,250円',
+    blurb: '120ml。税込8,250円。',
+    detail: '内容量は120mlです。店頭受け取りと配送が選べます。表示価格は税込8,250円です。',
+  },
+  {
     id: 'uv',
     name: 'エクソソーム入り日焼け止めUVクリーム 30g',
     cat: 'ホームケア',
@@ -78,7 +93,7 @@ const PRODUCTS = [
   },
 ];
 
-const FILTERS = ['すべて', 'マスク', 'セラム', 'UV', 'クレンジング', '洗顔'];
+const FILTERS = ['すべて', 'マスク', 'セラム', '化粧水', 'UV', 'クレンジング', '洗顔'];
 const CART_KEY = 'cure-ec-cart';
 const ORDER_EMAIL = 'kyon.kira.0725.0305@gmail.com';
 const ORDER_KEY = 'cure-ec-orders';
@@ -288,7 +303,7 @@ function paintDetail() {
       <h2 id="detailTitle">${esc(item.name)}</h2>
       <p class="price">${yen(item.price)}<small>税込</small></p>
       <p>${esc(item.detail)}</p>
-      ${item.id === 'serum' || item.id === 'mask' ? '<p class="fine">当店のセラムは、HITOYURAIの正代理店です。代理店規約により、楽天、アマゾン、Yahooなどの外部サイトへの転売は禁止されています。外部サイトでお見かけの際は、粗悪品の恐れがございますので、お気をつけくださいませ。メルティングマスクも同様です。</p>' : ''}
+      ${item.id === 'serum' || item.id === 'mask' || item.id === 'lotion' ? '<p class="fine">当店のセラムは、HITOYURAIの正代理店です。代理店規約により、楽天、アマゾン、Yahooなどの外部サイトへの転売は禁止されています。外部サイトでお見かけの際は、粗悪品の恐れがございますので、お気をつけくださいませ。メルティングマスクと高濃度幹細胞化粧水も同様です。</p>' : ''}
       <p class="fine">${item.ship ? '店頭受け取りと配送が選べます。' : 'この商品は店頭でのご利用です。配送はできません。'}</p>
       <button type="button" data-add="${esc(item.id)}">カートに入れる</button>
     </div>
