@@ -1,10 +1,10 @@
 'use strict';
 
-const CACHE = 'cure-shop-uv-volume-v1';
+const CACHE = 'cure-shop-checkout-copy-v1';
 const SHELL = [
   './',
   './index.html',
-  './shop.js?v=uv-30g',
+  './shop.js?v=checkout-copy',
   './manifest.json',
   './assets/cure-logo.jpg',
   './assets/cure-home-aqua.jpg',

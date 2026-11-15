@@ -205,8 +205,13 @@ function payBlock(item) {
   if (!item.payUrl) return '';
   const amount = Number(item.price).toLocaleString('ja-JP');
   const note = item.payNote || `1本・税込${amount}円`;
-  return `<a class="pay" href="${esc(item.payUrl)}" target="_blank" rel="noopener noreferrer">AirPAYで支払う</a><p class="fine">${esc(note)}</p>`;
+  return `<div class="payment">
+    <a class="pay" href="${esc(item.payUrl)}" target="_blank" rel="noopener noreferrer" aria-label="${esc(item.name)}のクレジットカード決済">クレジットカード決済</a>
+    <p class="fine">${esc(note)}</p>
+  </div>`;
 }
+
+const CARD_PAYMENT_GUIDE = 'クレジットカードでは商品を1点ずつお支払いいただけます。送料とご注文については、お店からのご案内をご確認ください。';
 
 function paintGrid() {
   const list = PRODUCTS.filter((item) => filter === 'すべて' || item.concern === filter);
@@ -219,11 +224,10 @@ function paintGrid() {
       <div class="card-body">
         <p class="eyebrow">${esc(item.cat)} ・ ${esc(item.concern)}</p>
         <h3>${esc(item.name)}</h3>
-        <p class="blurb">${esc(item.blurb)}</p>
+        <p class="blurb">${esc(item.blurb.replace(/。(?=税込)/, ' ・ ').replace(/(円)。$/, '$1'))}</p>
         <div class="buy">
           <p class="price">${yen(item.price)}<small>税込</small></p>
           <button type="button" data-add="${esc(item.id)}">カートに入れる</button>
-          ${payBlock(item)}
         </div>
       </div>
     </article>
@@ -246,7 +250,9 @@ function paintDrawer() {
   $('shipNote').textContent = remain <= 0
     ? '配送は送料無料です。店頭受け取りも送料はありません。'
     : `配送は送料${yen(SHIPPING_FEE)}です。あと${yen(remain)}で送料無料。店頭受け取りは送料なし。`;
-  $('drawerBody').innerHTML = lines.map((line) => `
+  $('drawerBody').innerHTML = (lines.some((line) => line.payUrl)
+    ? `<p class="fine">${CARD_PAYMENT_GUIDE}</p>`
+    : '') + lines.map((line) => `
     <article class="line">
       <div class="mini ${line.image ? 'has-photo' : esc(line.tone)}" aria-hidden="true">${line.image ? `<img src="${esc(line.image)}" alt="">` : ''}</div>
       <div>
@@ -259,6 +265,7 @@ function paintDrawer() {
         </div>
       </div>
       <button type="button" class="text" data-remove="${esc(line.id)}">削除</button>
+      ${payBlock(line)}
     </article>
   `).join('');
   $('pickupNote').hidden = !needsPickup(lines);
@@ -284,7 +291,6 @@ function paintDetail() {
       ${item.id === 'serum' || item.id === 'mask' ? '<p class="fine">当店のセラムは、HITOYURAIの正代理店です。代理店規約により、楽天、アマゾン、Yahooなどの外部サイトへの転売は禁止されています。外部サイトでお見かけの際は、粗悪品の恐れがございますので、お気をつけくださいませ。メルティングマスクも同様です。</p>' : ''}
       <p class="fine">${item.ship ? '店頭受け取りと配送が選べます。' : 'この商品は店頭でのご利用です。配送はできません。'}</p>
       <button type="button" data-add="${esc(item.id)}">カートに入れる</button>
-      ${payBlock(item)}
     </div>
   `;
 }
@@ -313,6 +319,14 @@ function paintCheckout() {
   mount.innerHTML = lines.map((line) => `
     <div class="sum-line"><span>${esc(line.name)} × ${line.qty}</span><strong>${yen(line.price * line.qty)}</strong></div>
   `).join('') + `<div class="sum-line"><span>商品合計</span><strong>${yen(bill.subtotal)}</strong></div><div class="sum-line"><span>送料</span><strong>${shipLabel}</strong></div><div class="sum-line total"><span>合計</span><strong>${yen(bill.total)}</strong></div>`;
+  const payable = lines.filter((line) => line.payUrl);
+  if (payable.length) {
+    mount.innerHTML += `<section aria-labelledby="cardPaymentTitle">
+      <h3 id="cardPaymentTitle">クレジットカード決済</h3>
+      <p class="fine">${CARD_PAYMENT_GUIDE}</p>
+      ${payable.map((line) => `<div><strong>${esc(line.name)}</strong>${payBlock(line)}</div>`).join('')}
+    </section>`;
+  }
   $('receiveHint').textContent = onlyShop
     ? '施術チケットが入っているので、受け取りは店頭のみです。'
     : bill.shipping === 0 && isDelivery
