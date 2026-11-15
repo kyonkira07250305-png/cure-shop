@@ -91,9 +91,24 @@ const PRODUCTS = [
     blurb: '100g。税込3,300円。',
     detail: '内容量は100gです。店頭受け取りと配送が選べます。表示価格は税込3,300円です。',
   },
+  {
+    id: 'milky-lotion',
+    name: '高濃度幹細胞乳液 プレミアムミルキーローション',
+    cat: 'ホームケア',
+    concern: '乳液',
+    volume: '80mL',
+    price: 8250,
+    ship: true,
+    tone: 'mist',
+    image: 'assets/milky-lotion.jpg',
+    payUrl: 'https://web.online.airpayment.jp/payment?planId=PLT7uRBCoQdTtrSnLI',
+    payNote: '1本・税込8,250円',
+    blurb: '80mL・税込8,250円',
+    detail: '内容量 80mL',
+  },
 ];
 
-const FILTERS = ['すべて', 'マスク', 'セラム', '化粧水', 'UV', 'クレンジング', '洗顔'];
+const FILTERS = ['すべて', 'マスク', 'セラム', '化粧水', '乳液', 'UV', 'クレンジング', '洗顔'];
 const CART_KEY = 'cure-ec-cart';
 const ORDER_EMAIL = 'kyon.kira.0725.0305@gmail.com';
 const ORDER_KEY = 'cure-ec-orders';
