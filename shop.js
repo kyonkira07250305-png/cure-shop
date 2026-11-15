@@ -333,7 +333,7 @@ function paintDetail() {
       <h2 id="detailTitle">${esc(item.name)}</h2>
       <p class="price">${yen(item.price)}<small>税込</small></p>
       <p>${esc(item.detail)}</p>
-      ${item.id === 'serum' || item.id === 'mask' || item.id === 'lotion' ? '<p class="fine">当店のセラムは、HITOYURAIの正代理店です。代理店規約により、楽天、アマゾン、Yahooなどの外部サイトへの転売は禁止されています。外部サイトでお見かけの際は、粗悪品の恐れがございますので、お気をつけくださいませ。メルティングマスクと高濃度幹細胞化粧水も同様です。</p>' : ''}
+      ${item.id === 'serum' || item.id === 'mask' || item.id === 'lotion' ? '<p class="fine">当店のセラムは、HITOYURAIの正代理店です。代理店規約により、楽天、アマゾン、Yahooなどの外部サイトへの転売は禁止されています。外部サイトでお見かけの際は、粗悪品の恐れがございますので、お気をつけくださいませ。メルティングマスクも同様です。</p>' : ''}
       <p class="fine">${item.ship ? '店頭受け取りと配送が選べます。' : 'この商品は店頭でのご利用です。配送はできません。'}</p>
       <button type="button" data-add="${esc(item.id)}">カートに入れる</button>
     </div>
